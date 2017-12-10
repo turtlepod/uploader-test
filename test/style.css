@@ -1,0 +1,46 @@
+/**
+ * Style
+**/
+
+.gallery-images:before ,
+.gallery-images:after {
+	content:".";display:block;height:0;clear:both;visibility:hidden;
+}
+.gallery-image {
+	float: left;
+	position: relative;
+	margin: 0 10px 10px 0;
+	width: 80px;
+	height: 80px;
+	background-size: cover;
+}
+.gallery-image img {
+	display: block;
+	max-width: 100%;
+	height: auto;
+}
+.image-remove {
+	display: block;
+	text-decoration: none;
+}
+.image-remove {
+	position: absolute;
+	top: -5px;
+	right: -5px;
+	background: #ccc;
+	border-radius: 50%;
+	height: 20px;
+	width: 20px;
+	color: #fff;
+}
+.image-remove:hover,
+.image-remove:active {
+	color: #fff;
+	text-decoration: none;
+	background: #00a0d2;
+}
+
+#maybe:after,
+#preview:after {
+	content:".";display:block;height:0;clear:both;visibility:hidden;
+}
