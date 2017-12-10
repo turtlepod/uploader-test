@@ -25,10 +25,13 @@ define( __NAMESPACE__ . '\FILE', __FILE__ );
 define( __NAMESPACE__ . '\PLUGIN', plugin_basename( __FILE__ ) );
 define( __NAMESPACE__ . '\VERSION', '1.0.0' );
 
+
 /* Init
 ------------------------------------------ */
 
 add_action( 'plugins_loaded', function() {
+
+	require_once( PATH . 'test/functions.php' );
 
 	// Register Settings.
 	add_action( 'admin_init', function() {
@@ -72,33 +75,7 @@ add_action( 'plugins_loaded', function() {
 
 		// Custom save action. Not using settings API.
 		if ( $page && isset( $_POST['_nonce_' . PREFIX] ) && $_POST['_nonce_' . PREFIX] && wp_verify_nonce( $_POST['_nonce_' . PREFIX], __FILE__ ) ) {
-
-			// Handle Uploads.
-			// Format multiple files into individual $_FILES data.
-			// This is becuase WordPress media_handle_upload() only support single input file (not multiple).
-			$_files_gallery = $_FILES['gallery'];
-			$files_data = array();
-			if ( isset( $_files_gallery['name'] ) && is_array( $_files_gallery['name'] ) ) {
-				$file_count = count( $_files_gallery['name'] );
-				for ( $n = 0; $n < $file_count; $n++ ) {
-					if( $_files_gallery['name'][$n] && $_files_gallery['type'][$n] && $_files_gallery['tmp_name'][$n] ){
-						if( ! $_files_gallery['error'][$n] ){ // Check error.
-							$type = wp_check_filetype( $_files_gallery['name'][$n] );
-
-							// Only image allowed.
-							if ( strpos( $type['type'], 'image' ) !== false ) {
-								$files_data[] = array(
-									'name'     => $_files_gallery['name'][$n],
-									'type'     => $type['type'],
-									'tmp_name' => $_files_gallery['tmp_name'][$n],
-									'error'    => $_files_gallery['error'][$n],
-									'size'     => filesize( $_files_gallery['tmp_name'][$n] ), // in byte.
-								);
-							}
-						}
-					}
-				}
-			} // end if().
+			$attachment_ids = mycut_handle_upload( 'gallery' );
 
 			// Stored IDs.
 			$ids = get_option( 'mycut', array() );
@@ -113,27 +90,7 @@ add_action( 'plugins_loaded', function() {
 				wp_delete_attachment( $del_id, true );
 			}
 
-			// Upload each file.
-			$attachment_ids = $keep_ids;
-			foreach ( $files_data as $file_data ) {
-
-				// Load WP Media.
-				if ( ! function_exists( 'media_handle_upload' ) ) {
-					require_once( ABSPATH . 'wp-admin/includes/image.php' );
-					require_once( ABSPATH . 'wp-admin/includes/file.php' );
-					require_once( ABSPATH . 'wp-admin/includes/media.php' );
-				}
-
-				// Set files data to upload.
-				$_FILES['gallery'] = $file_data;
-				$attachment_id = media_handle_upload( 'gallery', 0 );
-
-				if ( $attachment_id ) {
-					$attachment_ids[] = $attachment_id;
-				}
-			}
-
-			update_option( 'mycut', $attachment_ids );
+			update_option( 'mycut', array_merge( $keep_ids, $attachment_ids ) );
 
 			// Redirect back for clearner browser state.
 			wp_safe_redirect( esc_url_raw( add_query_arg( 'page', PREFIX, admin_url( 'admin.php' ) ) ) );

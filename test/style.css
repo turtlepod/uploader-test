@@ -1,7 +1,9 @@
 /**
  * Style
 **/
-
+.gallery-images {
+	margin-top: 30px;
+}
 .gallery-images:before ,
 .gallery-images:after {
 	content:".";display:block;height:0;clear:both;visibility:hidden;
@@ -40,7 +42,6 @@
 	background: #00a0d2;
 }
 
-#maybe:after,
 #preview:after {
 	content:".";display:block;height:0;clear:both;visibility:hidden;
 }
