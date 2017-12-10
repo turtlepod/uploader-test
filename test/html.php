@@ -19,6 +19,6 @@ $gallery = is_array( $gallery ) ? $gallery : array();
 	<?php endforeach; ?>
 </div><!-- .gallery-images -->
 
-<p><input id="add-images" type="file" multiple="multiple" name="gallery[]" accept="image/*"></p>
+<p><label class="add-images"><span class="dashicons dashicons-plus"></span><input id="add-images" type="file" multiple="multiple" name="gallery[]" accept="image/*"></label></p>
 
 <div id="preview"></div>

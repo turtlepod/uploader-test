@@ -1,6 +1,8 @@
 /**
  * Style
 **/
+
+/* Gallery Images */
 .gallery-images {
 	margin-top: 30px;
 }
@@ -42,6 +44,37 @@
 	background: #00a0d2;
 }
 
+/* Upload Field */
+.add-images {
+	display: block;
+	float: left;
+	position: relative;
+	padding: 29px;
+	font-size: 0;
+	margin: 0 10px 10px 0;
+	background: transparent;
+	color: rgba(45, 45, 45, 0.21);
+	border: 2px dashed #ddd;
+}
+.add-images:hover {
+	cursor: pointer;
+	background: transparent;
+	border: 2px dashed rgba(45, 45, 45, 0.21);
+}
+.add-images input {
+	opacity: 0;
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	padding: 0;
+	cursor: pointer;
+}
+
+/* Preview */
 #preview:after {
 	content:".";display:block;height:0;clear:both;visibility:hidden;
 }
